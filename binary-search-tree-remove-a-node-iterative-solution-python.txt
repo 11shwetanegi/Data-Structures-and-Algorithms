@@ -1,0 +1,176 @@
+class Node:
+    def __init__(self, data, parent):
+        self.data = data
+        self.leftChild = None
+        self.rightChild = None
+        self.parent = parent
+
+class BinarySearchTree:
+    def __init__(self):
+        self.root = None
+        
+    def insert_Node(self, data, currentRoot):
+        if self.root is None:
+            self.root = Node(data, None)
+            return self.root
+        else:
+            if data < currentRoot.data:
+                if currentRoot.leftChild:
+                    self.insert_Node(data, currentRoot.leftChild)
+                else:
+                    currentRoot.leftChild = Node(data, currentRoot)
+        
+            else:
+                if currentRoot.rightChild:
+                    self.insert_Node(data, currentRoot.rightChild)
+                else:
+                    currentRoot.rightChild = Node(data, currentRoot)
+            
+        
+        
+                
+    def traverse_Inorder(self, currentRoot):
+        
+        if currentRoot is None:
+            print("Either BST is Empty or no root is given")
+        else:
+            if currentRoot.leftChild:
+                self.traverse_Inorder(currentRoot.leftChild)
+                
+            print(currentRoot.data)
+            
+            if currentRoot.rightChild:
+                self.traverse_Inorder(currentRoot.rightChild)
+            
+    def get_max(self, currentRoot):
+        if currentRoot.rightChild is None:
+            return currentRoot.data
+        else:
+            return self.get_max(currentRoot.rightChild)
+        
+    def get_min(self, currentRoot):
+        if currentRoot.leftChild is None:
+            return currentRoot.data
+        else:
+            return self.get_min(currentRoot.leftChild)
+            
+    def get_predecessor(self, currentRoot):
+        if currentRoot.rightChild:
+            return self.get_predecessor(currentRoot.rightChild)
+        return currentRoot
+
+    def remove(self, data, currentRoot):
+        if currentRoot is None:
+            return 
+        
+        if data < currentRoot.data:
+            self.remove(data, currentRoot.leftChild)
+        elif data > currentRoot.data:
+            self.remove(data, currentRoot.rightChild)
+        else:
+            
+            parent = currentRoot.parent
+            
+            # if the node is leaf node
+            if not currentRoot.leftChild and not currentRoot.rightChild:
+                if parent.leftChild == currentRoot:
+                    parent.leftChild = None
+                if parent.rightChild == currentRoot:
+                    parent.rightChild = None
+                
+                if parent == None:
+                    self.root = None
+                
+                del currentRoot 
+            
+            # if the node is havin a right child but no left child
+            elif not currentRoot.leftChild and currentRoot.rightChild:
+                
+                if parent is not None:
+                    if parent.leftChild == currentRoot:
+                        parent.leftChild = currentRoot.rightChild
+                    if parent.rightChild == currentRoot:
+                        parent.rightChild = currentRoot.rightChild
+                        
+                else:
+                    self.root = currentRoot.rightChild
+                
+                currentRoot.rightChild.parent = parent
+                
+                del currentRoot
+            
+            # if the node is havin a left child but no right child
+            elif not currentRoot.rightChild and currentRoot.leftChild:
+                
+                if parent is not None:
+                    if parent.leftChild == currentRoot:
+                        parent.leftChild = currentRoot.leftChild
+                    if parent.rightChild == currentRoot:
+                        parent.rightChild = currentRoot.leftChild
+                        
+                else:
+                    self.root = currentRoot.leftChild
+                
+                currentRoot.leftChild.parent = parent
+                
+                del currentRoot
+                
+            # if the node has both left and right child
+            # finding the predecessor in left sub tree 
+            else:
+                predecessor = self.get_predecessor(currentRoot.leftChild)
+                
+                # swapping the data of the node to be deleted with the predecessor
+                temp = predecessor.data
+                predecessor.data = currentRoot.data
+                currentRoot.data = temp
+                
+                self.remove(predecessor.data, currentRoot.leftChild)
+                
+                    
+                    
+                
+            
+        
+
+
+
+
+
+bst = BinarySearchTree()
+
+root = bst.insert_Node(4, None)
+bst.insert_Node(44, root)
+bst.insert_Node(2, root)
+bst.insert_Node(-46, root)
+bst.insert_Node(43, root)
+bst.insert_Node(47, root)
+bst.traverse_Inorder(root)
+print("max item: " + str(bst.get_max(root)))
+print("min item: " + str(bst.get_min(root)))
+bst.remove(4, root)
+bst.traverse_Inorder(root)
+
+
+
+
+
+
+
+
+
+
+
+
+
+            
+            
+            
+            
+            
+            
+            
+            
+        
+
+

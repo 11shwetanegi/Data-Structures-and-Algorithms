@@ -1,0 +1,117 @@
+// Array as Parameter----------------------------
+
+#include <iostream>
+
+using namespace std;
+
+void fun(int *p, int n)
+{
+    cout<<p[4];
+}
+
+int main()
+{
+    int A[]={2,4,6,8,10};
+    //cout<<A;
+    
+    int n = 5;
+    int *p = A;
+    fun(A, n);
+
+    return 0;
+}
+
+// Array as return type-------------------------
+
+#include <iostream>
+
+using namespace std;
+
+int * fun(int n)
+{
+    int *p;
+    p = new int[5];
+    
+    for(int i = 0; i<n; i++)
+    p[i] = 2*i+1;
+    
+    return p;
+}
+
+int main()
+{
+    int *q, n=5;
+    
+    q = fun(n);
+    
+    for(int i = 0; i<n; i++)
+    cout<<q[i]<<" ";
+    
+    return 0;
+}
+
+// Structure as parameter--------------
+
+#include <iostream>
+
+using namespace std;
+
+struct rect 
+{
+    int l;
+    int b;
+};
+
+// for pass by address
+// void fun(struct rect *r)
+void fun(struct rect r)
+{
+    cout<<r.l<<endl;
+    cout<<r.b;
+    // when structure is passed by address
+    // cout<<r->l<<endl;
+    // cout<<r->b;
+
+
+}
+int main()
+{
+    struct rect r1={10,5};
+    fun(r1);
+    // when we have to pass by address
+    // fun(&r1);
+    return 0;
+    
+}
+
+//Structure as return type-------------------
+
+#include <iostream>
+
+using namespace std;
+
+struct rect 
+{
+    int l;
+    int b;
+};
+
+struct rect * fun()
+{
+    struct rect *p;
+    p = new rect;
+    
+    p->l = 15;
+    p->b = 7;
+    
+    return p;
+}
+
+
+int main()
+{
+    struct rect *ptr = fun();
+    cout<<ptr->l<<endl;
+    cout<<ptr->b;
+    return 0;
+}

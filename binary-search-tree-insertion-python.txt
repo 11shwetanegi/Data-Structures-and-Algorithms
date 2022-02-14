@@ -1,0 +1,94 @@
+class Node:
+    def __init__(self, data):
+        self.data = data
+        self.leftChild = None
+        self.rightChild = None
+
+class BinarySearchTree:
+    def __init__(self):
+        self.root = None
+        
+    def insert_Node(self, data, currentRoot):
+        if self.root is None:
+            self.root = Node(data)
+            return self.root
+        else:
+            if data < currentRoot.data:
+                if currentRoot.leftChild:
+                    self.insert_Node(data, currentRoot.leftChild)
+                else:
+                    currentRoot.leftChild = Node(data)
+        
+            else:
+                if currentRoot.rightChild:
+                    self.insert_Node(data, currentRoot.rightChild)
+                else:
+                    currentRoot.rightChild = Node(data)
+            
+        
+        
+                
+    def traverse_Inorder(self, currentRoot):
+        
+        if currentRoot is None:
+            print("Either BST is Empty or no root is given")
+        else:
+            if currentRoot.leftChild:
+                self.traverse_Inorder(currentRoot.leftChild)
+                
+            print(currentRoot.data)
+            
+            if currentRoot.rightChild:
+                self.traverse_Inorder(currentRoot.rightChild)
+            
+    def get_max(self, currentRoot):
+        if currentRoot.rightChild is None:
+            return currentRoot.data
+        else:
+            return self.get_max(currentRoot.rightChild)
+        
+    def get_min(self, currentRoot):
+        if currentRoot.leftChild is None:
+            return currentRoot.data
+        else:
+            return self.get_min(currentRoot.leftChild)
+
+    def remove(self, data, currentRoot):
+        
+
+
+
+
+
+bst = BinarySearchTree()
+
+root = bst.insert_Node(4, None)
+bst.insert_Node(44, root)
+bst.insert_Node(-46, root)
+bst.insert_Node(43, root)
+bst.insert_Node(47, root)
+bst.traverse_Inorder(root)
+print("max item: " + str(bst.get_max(root)))
+print("min item: " + str(bst.get_min(root)))
+
+
+
+
+
+
+
+
+
+
+
+
+
+            
+            
+            
+            
+            
+            
+            
+            
+        

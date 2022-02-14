@@ -1,0 +1,366 @@
+/******************************************************************************
+
+                              Online C++ Compiler.
+               Code, Compile, Run and Debug C++ program online.
+Write your code in this editor and press "Run" button to compile and execute it.
+
+*******************************************************************************/
+
+#include <iostream>
+
+using namespace std;
+
+class TreeNode
+{   
+    public:
+    TreeNode *lchild;
+    int data;
+    TreeNode *rchild;
+    void tree_create();
+};
+
+class Node
+{
+    public:
+    TreeNode *data;
+    Node *next;
+};
+
+//Class Queue
+
+class Queue
+{
+    private:
+    Node *front;
+    Node *rear;
+    
+    public:
+    Queue(){front=NULL;rear=NULL;}
+    void Enqueue(TreeNode * x);
+    TreeNode * Dequeue();
+    void Display();
+    int isEmptyQueue();
+};
+
+void Queue::Enqueue(TreeNode * x)
+{
+    Node *t;
+    t = new Node;
+    
+    if(t == NULL)
+        cout<<"Queue is full\n";
+    else
+    {
+        t->data = x;
+        t->next = NULL;
+        
+        if(front == NULL)
+        {
+            front=rear=t;
+        }
+        else
+        {   
+            rear->next = t;
+            rear = t;
+        }
+    }
+}
+
+TreeNode * Queue::Dequeue()
+{
+    TreeNode * x = NULL;
+    
+    if(front==NULL && rear==NULL)
+        cout<<"Queue is empty\n";
+    else
+    {
+        Node *p;
+        p = front;
+        front = front->next;
+        x = p->data;
+        free(p);
+    }
+    return x;
+}
+
+int Queue::isEmptyQueue()
+{
+    return front==NULL;
+}
+
+// Class Stack 
+
+class Stack
+{
+    private:
+    Node *top;
+    
+    public:
+    Stack(){top=NULL;}
+    TreeNode * Pop();
+    void Push(TreeNode * x);
+    int isEmptyStack();
+};
+
+void Stack::Push(TreeNode * x)
+{
+    Node *t = new Node;
+    if(t==NULL)
+        cout<<"Stack is Full\n";
+    else
+    {
+        t->data = x;
+        t->next = top;
+        top = t;
+    }
+}
+
+TreeNode * Stack::Pop()
+{
+    TreeNode * x;
+    if(top==NULL)
+        cout<<"Stack is Empty\n";
+        
+    else 
+    {
+        Node *t = top;
+        x = top->data;
+        top = top->next;
+        delete t;
+    }
+    return x;
+}
+
+int Stack::isEmptyStack()
+{
+    return top==NULL;
+}
+
+// Class Tree
+
+class Tree
+{
+    public:
+    TreeNode *root;
+    Tree(){root=NULL;}
+    void CreateTree();
+    void PreOrder(TreeNode *p);
+    void InOrder(TreeNode *p);
+    void PostOrder(TreeNode *p);
+    //void LevelOrder(TreeNode *p);
+    void IterativePreorder();
+    void IterativeInorder();
+    void IterativePostorder();
+    int Height(TreeNode *root);
+    int Count(TreeNode *root);
+    int Sum(TreeNode *p);
+    int deg2NodeCount(Node *p);
+};
+
+void Tree::PreOrder(TreeNode *p)
+{
+    if(p!=NULL)
+    {
+        printf("%d ", p->data);
+        PreOrder(p->lchild);
+        PreOrder(p->rchild);
+    }
+}
+
+void Tree::InOrder(TreeNode *p)
+{
+    if(p!=NULL)
+    {
+        InOrder(p->lchild);
+        printf("%d ", p->data);
+        InOrder(p->rchild);
+    }
+}
+
+void Tree::PostOrder(TreeNode *p)
+{
+    if(p!=NULL)
+    {
+        PostOrder(p->lchild);
+        PostOrder(p->rchild);
+        printf("%d ", p->data);
+    }
+}
+
+void Tree::IterativePreorder()
+{
+    Stack st;
+    TreeNode *t = root;
+    
+    while(t!=NULL || !st.isEmptyStack())
+    {
+        if(t!=NULL)
+        {
+            cout<<t->data<<" ";
+            st.Push(t);
+            t=t->lchild;
+        }
+        else
+        {
+            t = st.Pop();
+            t = t->rchild;
+        }
+    }
+}
+
+void Tree::IterativeInorder()
+{
+    Stack st;
+    TreeNode *t = root;
+    
+    while(t!=NULL || !st.isEmptyStack())
+    {
+        if(t!=NULL)
+        {
+            st.Push(t);
+            t=t->lchild;
+        }
+        else
+        {
+            t = st.Pop();
+            cout<<t->data<<" ";
+            t = t->rchild;
+        }
+    }
+}
+
+void Tree::IterativePostorder()
+{
+    long int temp;
+    Stack st;
+    TreeNode *t = root;
+    
+    while(t!=NULL || !st.isEmptyStack())
+    {
+        if(t!=NULL)
+        {
+            st.Push(t);
+            t=t->lchild;
+        }
+        else
+        {
+            temp = (long int)st.Pop();
+            if(temp>0)
+            {
+                st.Push((TreeNode *)-temp);
+                t = ((TreeNode *)temp)->rchild;
+            }
+            else
+            {
+                cout<<((TreeNode *)(-temp))->data<<" ";
+                t=NULL;
+            }
+        }
+    }
+}
+
+void Tree::CreateTree()
+{
+    TreeNode *p, *t;
+    int x;
+    Queue q;
+    
+    cout<<"Enter root value: ";
+    cin>>x;
+    root = new TreeNode;
+    root->data = x;
+    root->lchild = root->rchild = NULL;
+    q.Enqueue(root);
+    
+    while(!q.isEmptyQueue())
+    {
+        
+        p=q.Dequeue();
+        cout<<"Enter Left Child of "<<p->data<<": ";
+        cin>>x;
+        if(x!=-1)
+        { 
+            t = new TreeNode;
+            t->data = x;
+            t->lchild = t->rchild = NULL;
+            p->lchild = t;
+            q.Enqueue(t);
+        }
+        
+        cout<<"Enter Right Child of "<<p->data<<": ";
+        cin>>x;
+        if(x!=-1)
+        {
+            t = new TreeNode;
+            t->data = x;
+            t->lchild = t->rchild = NULL;
+            p->rchild = t;
+            q.Enqueue(t);
+        }
+    }
+}
+
+int Tree::Height(TreeNode *root)
+{
+    if(root!=NULL)
+    {
+        if(Height(root->lchild)>Height(root->rchild))
+            return Height(root->lchild);
+        else
+            return Height(root->rchild);
+    }
+    return 0;
+}
+
+int Tree::Count(TreeNode *root)
+{
+    if(root!=NULL)
+        return Count(root->lchild)+Count(root->rchild)+1;
+    return 0;
+}
+
+int Tree::Sum(TreeNode *p) {
+    int x;
+    int y;
+    if (p != NULL){
+        x = Sum(p->lchild);
+        y = Sum(p->rchild);
+        return x + y + p->data;
+    }
+    return 0;
+
+int Tree::deg2NodeCount(Node *p) {
+    int x;
+    int y;
+    if (p != NULL){
+        x = deg2NodeCount(p->lchild);
+        y = deg2NodeCount(p->rchild);
+        if (p->lchild && p->rchild){
+            return x + y + 1;
+        } else {
+            return x + y;
+        }
+    }
+    return 0;
+}
+ 
+
+
+int main()
+{
+    Tree t;
+    t.CreateTree();
+    //t.PreOrder(t.root);
+    //t.InOrder(t.root);
+    //t.PostOrder(t.root);
+    // t.IterativePreorder();
+    // cout<<endl;
+    // t.IterativeInorder();
+    // cout<<endl;
+    // t.IterativePostorder();
+    cout<<"Height: "<<t.Height(t.root)<<endl;
+    cout<<"Count: "<<t.Count(t.root)<<endl;
+    cout<<"deg 2 nodes Count: "<<t.deg2NodeCount(t.root)<<endl;
+    cout<<"Sum: "<<t.Sum(t.root)<<endl;
+    return 0;
+}

@@ -1,0 +1,210 @@
+/******************************************************************************
+
+                              Online C++ Compiler.
+               Code, Compile, Run and Debug C++ program online.
+Write your code in this editor and press "Run" button to compile and execute it.
+
+*******************************************************************************/
+
+#include <iostream>
+
+using namespace std;
+
+class Node
+{
+    public:
+    struct Node *lchild;
+    int data;
+    struct Node *rchild;
+};
+
+class Tree
+{
+    public:
+    Node *root;
+    Tree(){root=NULL;}
+    Node * getRoot(){return root;}
+    void Insert(int key);
+    Node * RInsert(Node *p, int key);
+    Node * Search(int key);
+    Node * Delete(Node *, int key);
+    void Inorder(Node *p);
+    Node * InSucc(Node *p);
+    Node * InPre(Node *p);
+    int Height(Node *p);
+    
+};
+
+void Tree::Insert(int key)
+{
+    Node *t = root;
+    Node *r, *p;
+    
+    if(root==NULL)
+    {
+        p = new Node;
+        p->data = key;
+        p->lchild = p->rchild=NULL;
+        root = p;
+        return;
+    }
+    
+    while(t!=NULL)
+    {
+        r = t;
+        if(key<t->data)
+            t = t->lchild;
+        else if(key>t->data)
+            t = t->rchild;
+        else
+            return;
+    }
+    
+    p = new Node;
+    p->data = key;
+    p->lchild = p->rchild=NULL;
+    
+    if(key<r->data) 
+        r->lchild = p;
+    else
+        r->rchild = p;
+        
+}
+
+Node * Tree::Search(int key)
+{
+    Node *t=root;
+    
+    while(t!=NULL)
+    {
+       if(key==t->data)
+            return t;
+        else if(key < t->data)
+            t = t->lchild;
+        else  
+            t = t->rchild;
+    }
+    return NULL;
+}
+
+
+void Tree::Inorder(Node *p)
+{
+    if(p!=NULL)
+    {
+        Inorder(p->lchild);
+        cout<<p->data<<" ";
+        Inorder(p->rchild);
+    }
+}
+ 
+Node * Tree::RInsert(Node *p, int key)
+{
+    Node *t;
+    
+    if(p==NULL)
+    {
+        t = new Node;
+        t->data = key;
+        t->lchild = t->rchild = NULL;
+        return t;
+        
+    }
+    
+    if(key < p->data)
+        p->lchild = RInsert(p->lchild, key);
+    else if(key > p->data)
+        p->rchild = RInsert(p->rchild, key);
+    return p;
+}
+
+int Tree::Height(Node * p)
+{
+    int x, y;
+    if(p==NULL)return 0;
+    x = Height(p->lchild);
+    y = Height(p->rchild);
+    return x>y ? x+1 : y+1;
+}
+
+Node * Tree::InPre(Node *p)
+{
+    while(p!=NULL && p->rchild!=NULL)
+        p = p->rchild;
+    return p;
+}
+
+Node * Tree::InSucc(Node *p)
+{
+    while(p!=NULL && p->lchild!=NULL)
+        p = p->lchild;
+    return p;
+}
+
+Node * Tree::Delete(Node *p, int key)
+{
+    Node *q;
+    
+    
+    if(p==NULL)
+        return NULL;
+    if(p->lchild==NULL && p->rchild==NULL)
+    {
+        if(p==root)
+            root = NULL;
+        free(p);
+        return NULL;
+    }
+    
+    if(key < p->data)
+        p->lchild = Delete(p->lchild, key);
+    else if(key > p->data)
+        p->rchild = Delete(p->rchild, key);
+    else
+    {
+        if(Height(p->lchild) > Height(p->rchild))
+        {
+            q = InPre(p->lchild);
+            p->data = q->data;
+            p->lchild = Delete(p->lchild, q->data);
+        }
+        else
+        {
+            q = InSucc(p->rchild);
+            p->data = q->data;
+            p->rchild = Delete(p->rchild, q->data);
+        }
+    }
+    return p;
+}
+
+
+int main()
+{
+    struct Node *temp;
+    
+    Tree t;
+    // t.Insert(5);
+    // t.Insert(4);
+    // t.Insert(7);
+    // t.Insert(9);
+    
+    t.root = t.RInsert(t.root, 11);
+    t.RInsert(t.root, 10);
+    t.RInsert(t.root, 9);
+    t.RInsert(t.root, 8);
+    t.RInsert(t.root, 7);
+    
+    t.Delete(t.root, 11);
+    
+    t.Inorder(t.getRoot());
+    cout<<endl;
+    
+    temp = t.Search(10);
+    if(temp!=NULL)
+        cout<<temp->data<<" found";
+    else 
+        cout<<"Element not found";
+    return 0;
+}
+

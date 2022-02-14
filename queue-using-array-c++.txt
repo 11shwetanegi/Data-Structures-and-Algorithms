@@ -1,0 +1,109 @@
+/******************************************************************************
+
+                              Online C++ Compiler.
+               Code, Compile, Run and Debug C++ program online.
+Write your code in this editor and press "Run" button to compile and execute it.
+Eg:
+         top
+4 5 6 7 8 9 stack
+0 1 2 3 4 5 index
+6 5 4 3 2 1 pos
+
+
+*******************************************************************************/
+#include <iostream>
+
+using namespace std;
+
+class Queue
+{
+    private:
+        int front;
+        int rear;
+        int size;
+        int *Q;
+        
+    public:
+        Queue(){front=rear=-1;size=10;Q=new int[size];}
+        Queue(int size){front=rear=-1;this->size=size;Q=new int[this->size];}
+        void Enqueue(int x);
+        int Dequeue();
+        void Display();
+        
+};
+
+void Queue::Enqueue(int x)
+{
+    if(rear==size-1)
+        cout<<"Queue is full\n";
+    else
+    {
+        rear++;
+        Q[rear]=x;
+    }
+}
+
+int Queue::Dequeue()
+{
+    int x=-1;
+    if(front==rear)
+        cout<<"Queue is Empty\n";
+        
+    else
+    {
+        x = Q[front+1];
+        front++;
+    }
+    return x;
+}
+
+void Queue:: Display()
+{
+    if(front==rear)
+        cout<<"Queue is Empty\n";
+    else
+    {
+        for(int i=front+1; i<=rear; i++)
+        {
+            cout<<Q[i]<<" ";
+        }
+        cout<<endl;
+    }
+}
+
+int main()
+{
+    
+    Queue q;
+    
+    q.Enqueue(1);
+    q.Enqueue(2);
+    q.Enqueue(3);
+    q.Enqueue(4);
+    q.Enqueue(5);
+    q.Enqueue(6);
+    q.Enqueue(7);
+    q.Enqueue(8);
+    q.Enqueue(9);
+    q.Enqueue(10);
+    q.Enqueue(11);
+    
+    q.Display();
+    
+    cout<<q.Dequeue()<<"\n";//1
+    cout<<q.Dequeue()<<"\n";
+    cout<<q.Dequeue()<<"\n";
+    cout<<q.Dequeue()<<"\n";//4
+    cout<<q.Dequeue()<<"\n";
+    cout<<q.Dequeue()<<"\n";
+    cout<<q.Dequeue()<<"\n";
+    cout<<q.Dequeue()<<"\n";//8
+    cout<<q.Dequeue()<<"\n";
+    cout<<q.Dequeue()<<"\n";
+    cout<<q.Dequeue()<<"\n";//11
+    
+    q.Display();
+    
+    return 0;
+}
+

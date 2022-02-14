@@ -1,0 +1,134 @@
+/******************************************************************************
+
+                              Online C++ Compiler.
+               Code, Compile, Run and Debug C++ program online.
+Write your code in this editor and press "Run" button to compile and execute it.
+0 1 2 3 4 5
+
+4 5 6 7 8 9
+
+6 5 4 3 2 1
+
+
+*******************************************************************************/
+
+#include <iostream>
+
+using namespace std;
+
+struct Stack
+{
+    int size;
+    int top;
+    int *S;
+};
+
+void Push(struct Stack *st, int x)
+{
+    if(st->top==st->size-1)
+        cout<<"Stack is full\n";
+    else
+    {
+        st->top++;
+        st->S[st->top] = x;
+        cout<<x<<" inserted\n";
+    }
+}
+
+int Pop(struct Stack *st)
+{
+    int x;
+    if(st->top==-1)
+        cout<<"Stack is Empty\n";
+    else
+    {
+        x = st->S[st->top];
+        st->top--;
+        cout<<x<<" deleted\n";
+        return x;
+    }
+}
+
+void Peek(struct Stack st, int pos)
+{
+    if(st.top-pos+1>0 && pos>0)
+    {
+        int x;
+        x = st.S[st.top-pos+1];
+        cout<<"Peek element is "<<x<<"\n";
+    }
+    else
+        cout<<"Invalid Position\n";
+    
+}
+
+void isEmpty(struct Stack st)
+{
+    if(st.top==-1)
+        cout<<"Stack is Empty\n";
+    else
+        cout<<"Stack is not Empty\n";
+}
+
+void isFull(struct Stack st)
+{
+    if(st.top==st.size-1)
+        cout<<"Stack is full\n";
+    else
+        cout<<"Stack is not full\n";
+}
+
+int StackTop(struct Stack st)
+{
+    if(st.top==-1)
+        cout<<"Stack is Empty\n";
+    else
+        return st.S[st.top];
+}
+
+void Display(struct Stack st)
+{
+    cout<<"Stack Display: ";
+    if(st.top==-1)
+        cout<<"stack is empty\n";
+    else
+    {
+        for(int i=st.top; i>=0; i--)
+        {
+            cout<<st.S[i]<<" ";
+        }
+        cout<<"\n";
+    }
+}
+
+int main()
+{
+    struct Stack st;
+    cout<<"Enter Size: ";
+    cin>>st.size;
+    st.S = new int[st.size];
+    st.top = -1;
+    
+    Push(&st, 4);
+    Push(&st, -1);
+    Push(&st, 6);
+    Push(&st, 9);
+    isFull(st);
+    
+    Display(st);
+    
+    Pop(&st);
+    Pop(&st);
+    Pop(&st);
+    Pop(&st);
+    isEmpty(st);
+    
+    Push(&st, 4);
+    Push(&st, -1);
+    Push(&st, 6);
+    Push(&st, 9);
+    Display(st);
+    Peek(st, 6);
+    
+    return 0;
+}

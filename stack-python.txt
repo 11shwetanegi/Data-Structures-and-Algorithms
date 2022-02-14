@@ -1,0 +1,36 @@
+'''
+
+Welcome to GDB Online.
+GDB online is an online compiler and debugger tool for C, C++, Python, Java, PHP, Ruby, Perl,
+C#, VB, Swift, Pascal, Fortran, Haskell, Objective-C, Assembly, HTML, CSS, JS, SQLite, Prolog.
+Code, Compile, Run and Debug online from anywhere in world.
+
+'''
+print ('Stack')
+
+class Stack:
+    def __init__(self):
+        self.stack = []
+        
+    def push(self, data):
+        self.stack.append(data)
+        
+    def pop(self):
+        
+        if len(self.stack) < 1:
+            print("stack is empty")
+            return
+        
+        data = self.stack[-1]
+        del self.stack[-1]
+        return data
+        
+    def peek(self):
+        return stack[-1]
+        
+    def isempty(self):
+        return self.stack == []
+        
+    def stack_size(self):
+        return len(self.stack)
+        
